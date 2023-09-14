@@ -30,7 +30,7 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static('public')) 
 
 
-app.listen(5500, function() {
+app.listen(process.env.PORT || 5000, function() {
     console.log('listening on 5500')
   }) 
 
