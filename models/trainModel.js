@@ -31,16 +31,16 @@ const trainSchema = new mongoose.Schema(
         },
         upheel: {
             type: Number,
-            required : true,
+            required : false,
         },
 
         kick_on_chair: {
             type: Number,
-            required : true,
+            required : false,
         },
         spreading_thigh: {
             type: Number,
-            required : true,
+            required : false,
         },
 
         date: {
