@@ -1,0 +1,6 @@
+uvicorn
+fastapi
+gunicorn
+motor
+pymongo[srv]
+jinja2
