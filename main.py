@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, UploadFile, Request, Form, File, Body
+from fastapi import FastAPI, HTTPException, UploadFile, Request, Form, File, Body, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -9,6 +9,7 @@ from database_todo import *
 from database_login import *
 from database_train import *
 import json
+from fastapi.encoders import jsonable_encoder
 
 origins = ["*"] 
 # This will eventually be changed to only the origins you will use once it's deployed, to secure the app a bit more.
@@ -66,9 +67,18 @@ async def get_train_data_byid(train: Train):
     return train
 
 @app.post('/train', response_model=FormData)
-async def add_train_data(form_data: FormData = Body(...)):
-    print(form_data)
-    result = await create_train(form_data)
+async def add_train_data(request: Request):
+    data = await request.body()
+    #data = data.decode('utf-8')
+    data = jsonable_encoder(data)
+    data = data.replace('=',':')
+    data = data.replace('&',',')
+    print(data)
+    #data = jsonable_encoder(data)
+    #print(data)
+    data = json.loads(data)
+    print(data)
+    result = await create_train(data)
     print(result)
     if not result: raise HTTPException(400)
     return result

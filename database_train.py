@@ -33,9 +33,8 @@ async def fetch_one_train(id):
     return doc
 
 async def create_train(train):
-    doc = train.dict()
-    print(doc)
-    result = await collection.insert_one(doc)
+    print(train)
+    result = await collection.insert_one(train)
     return result
 
 async def change_train(train):
