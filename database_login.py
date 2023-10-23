@@ -1,11 +1,12 @@
 from pymongo import MongoClient
-from bson.objectid import ObjectId
+from bson import ObjectId
 
-from model import *
-from login import Login
+from model_login import *
+
 import motor.motor_asyncio
 from dotenv import dotenv_values
 import os
+import json
 
 config = dotenv_values(".env")
 DATABASE_URI = config.get("DATABASE_URI")
@@ -18,7 +19,7 @@ database = client.todoapp
 
 user_collection = database.logins
 
-async def list_all_users():
+async def fetch_all_users():
     users = []
     cursor = user_collection.find({})
     async for doc in cursor:
@@ -26,14 +27,15 @@ async def list_all_users():
         users.append(login)
     return users
 
-async def find_user(login):
-    doc = await user_collection.find_one({"id": id})
-    print(doc)
-    return doc
+async def find_user(id):
+    result = await user_collection.find_one({"id": id})
+    print(result)
+    return result
 
 async def create_user(user):
     print(user)
     result = await user_collection.insert_one(user)
+    print(result)
     return result
 
 

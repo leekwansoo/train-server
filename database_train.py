@@ -1,8 +1,9 @@
 from pymongo import MongoClient
-from bson.objectid import ObjectId
+#
+from bson import ObjectId
 
-from model import *
-from train import Train
+from model_login import *
+from model_train import *
 import motor.motor_asyncio
 from dotenv import dotenv_values
 import os
@@ -18,39 +19,35 @@ database = client.todoapp
 collection = database.trains
 user_collection = database.logins
 
-async def fetch_all_tasks():
-    trains = []
+async def fetch_all_trains():
+    trains = []   
     cursor = collection.find({})
     async for doc in cursor:
         train = Train(**doc)
         trains.append(train)
+    
     return trains
 
-async def fetch_one_task(id):
+async def fetch_one_train(id):
     doc = await collection.find_one({"id": id}, {"_id": 0})
     return doc
 
-async def create_task(train):
+async def create_train(train):
     doc = train.dict()
     print(doc)
     result = await collection.insert_one(doc)
     return result
 
-async def change_task(train):
+async def change_train(train):
     print(train)
     id = train.id
     title = train.title
     desc = train.desc
     checked = train.checked
     await collection.update_one({"id": id}, {"$set": {"title": title, "desc": desc, "checked": checked}})
-    result = await fetch_one_task(id)
+    result = await fetch_one_train(id)
     return result
 
-async def remove_task(id):
+async def delete_train(id):
     await collection.delete_one({"id": id})
     return True
-
-async def find_user(id):
-    doc = await user_collection.find_one({"user": id}, {"_id": 0})
-    print(doc)
-    return doc
