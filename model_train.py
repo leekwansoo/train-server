@@ -26,4 +26,6 @@ class FormData(BaseModel):
     spreading_thigh: Optional[int] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+        populate_by_name = True
+        arbitrary_types_allowed = False

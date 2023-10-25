@@ -1,12 +1,13 @@
 from pymongo import MongoClient
-#
 from bson import ObjectId
 
 from model_login import *
 from model_train import *
+
 import motor.motor_asyncio
 from dotenv import dotenv_values
 import os
+import json
 
 config = dotenv_values(".env")
 DATABASE_URI = config.get("DATABASE_URI")
@@ -16,12 +17,14 @@ if os.getenv("DATABASE_URI"):
 client = motor.motor_asyncio.AsyncIOMotorClient(DATABASE_URI)
 
 database = client.todoapp
-collection = database.trains
+
 user_collection = database.logins
+train_collection = database.trains
+
 
 async def fetch_all_trains():
     trains = []   
-    cursor = collection.find({})
+    cursor = train_collection.find({})
     async for doc in cursor:
         train = Train(**doc)
         trains.append(train)
@@ -29,24 +32,48 @@ async def fetch_all_trains():
     return trains
 
 async def fetch_one_train(id):
-    doc = await collection.find_one({"id": id}, {"_id": 0})
+    doc = await train_collection.find_one({"id": id}, {"_id": 0})
     return doc
 
 async def create_train(train):
-    print(train)
-    result = await collection.insert_one(train)
+    doc = dict(train)
+    result = await train_collection.insert_one(doc)
+    if not result: return("insetion error")
     return result
-
+    
 async def change_train(train):
     print(train)
     id = train.id
     title = train.title
     desc = train.desc
     checked = train.checked
-    await collection.update_one({"id": id}, {"$set": {"title": title, "desc": desc, "checked": checked}})
+    await train_collection.update_one({"id": id}, {"$set": {"title": title, "desc": desc, "checked": checked}})
     result = await fetch_one_train(id)
     return result
 
 async def delete_train(id):
-    await collection.delete_one({"id": id})
+    await train_collection.delete_one({"id": id})
     return True
+
+async def fetch_all_users():
+    users = []
+    cursor = user_collection.find({})
+    async for doc in cursor:
+        login = Login(**doc)
+        users.append(login)
+    return users
+
+async def find_user(id):
+    result = await user_collection.find_one({"id": id})
+    print(result)
+    return result
+
+async def create_user(user):
+    result = await user_collection.insert_one(user)
+    return result
+
+
+async def delete_user(id):
+    doc = await user_collection.find_one_and_delete({"id": id}, {"_id": 0})
+    print(doc)
+    return doc
