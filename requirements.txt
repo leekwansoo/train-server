@@ -1,8 +1,0 @@
-uvicorn
-fastapi
-gunicorn
-motor
-pymongo
-pymongo[srv]
-python-dotenv
-jinja2
