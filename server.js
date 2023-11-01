@@ -38,9 +38,12 @@ app.get('/train', async function(요청, 응답) {
 });
 
 app.get('/train/:id', async function(요청, 응답) { 
-  const _id = 요청.params.id
-  const train = await Train.findById(_id)
-    응답.render('traintable.ejs', { 사용자: 요청.user, posts : train })
+  const user = 요청.params.id
+  console.log(user)
+  const train = await Train.find({user: user}).exec()
+  console.log(train)
+  if (!train) {응답.status(500).json({message: "User does not exist"})}
+    응답.render('traintable.ejs', { 사용자: user, posts : train })
 });
 
 app.post('/train', async function(요청, 응답){
@@ -55,7 +58,7 @@ app.post('/train', async function(요청, 응답){
  
   var 저장할거 = {
     date: date,
-    user: 요청.user,
+    user: 요청.body.user,
     pushup: 요청.body.pushup, 
     stomach: 요청.body.stomach,
     squat: 요청.body.squat,

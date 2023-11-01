@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const trainSchema = new mongoose.Schema(
     {  
-        name: {
+        user: {
             type: String,
             required: false,
             },
