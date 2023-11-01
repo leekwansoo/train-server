@@ -2,8 +2,16 @@ const mongoose = require("mongoose")
 const { Schema, model } = mongoose;
 
 const loginSchema = new mongoose.Schema(
-    {  
+    {   
         user: {
+            type: String,
+            required: false,
+            },
+        email: {
+            type: String,
+            required: false,
+            },
+        id: {
         type: String,
         required: true,
         },
@@ -11,19 +19,7 @@ const loginSchema = new mongoose.Schema(
         pw: {
             type: String,
             required : true,
-        },
-        email: {
-            type: String,
-            required : false,
-        },
-        age: {
-            type: Number,
-            required : false,
-        },
-        trainItems: {
-            type: Array,
-            required : false,
-        },
+        },       
     }
 )
 

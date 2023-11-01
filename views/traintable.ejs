@@ -58,44 +58,19 @@
       
       </tbody>
     </table>
-</div>
-
-<div class="container">
-    <form action="/train" method="POST">
-        <div class="form-group">
-    <table
-          class="table table-bordered table-striped table-hover table-condensed  text-center"
-          id="InputTable" name="InputTable">
-        
-        <tbody>
-        <tr>
-            <td>Date</td>
-            <td>User<input type="text" class="form-control" name="user"></td>
-            <td>푸시엎<input type="number" class="form-control" name="pushup"></td>
-            <td>배운동<input type= "number" class="form-control" name="stomach"></td>
-            <td>벽스퀏<input type= "number"  class="form-control" name="squat"></td>
-            <td>팔운동<input type= "number"  class="form-control" name="arm"></td>
-            <td>상체들기<input type= "number"  class="form-control" name="uplift"></td>
-            <td>뒷꿈치들기<input type= "number"  class="form-control" name="upheel"></td>
-            <td>의자발차기<input type= "number"  class="form-control" name="kick_on_chair"></td>
-            <td>무릎벌리기<input type= "number"  class="form-control" name="spreading_thigh"></td>          
-        </tr>    
-    </tbody>
-    </table>
-</form>
-<button type="submit" class="btn btn-danger">Submit</button>
+    
+    <button type="submit" class="btn btn-danger"><a href="/upload">운동기록추가</a></button>
 </div>
 
 <script>
   $('.delete').click(function(e){
     console.log(e.target.dataset);
     var id = e.target.dataset.id;
-    var 지금누른거=$(this); 
+    
     console.log(id)
     $.ajax({
       method : 'DELETE',
-      url : '/deletetrain',
-      data : {_id : id }
+      url : '/deletetrain/' + id,
     }).done(function(결과){
       console.log('성공했어요')
      
