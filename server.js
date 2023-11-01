@@ -28,7 +28,6 @@ app.use('/public', express.static('public'))
 
 
 app.get('/', function(요청, 응답) { 
-  console.log(요청.body)
   응답.render('index.ejs')
   //응답.sendFile('views/index.html', { root: __dirname }); 
 })
