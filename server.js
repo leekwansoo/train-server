@@ -28,8 +28,9 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static('public')) 
 
 
-app.get('/home', function(요청, 응답) { 
-  응답.render('index.ejs')
+app.get('/', function(요청, 응답) { 
+  응답.render('login.ejs')
+  //응답.render('index.ejs')
   //응답.sendFile('views/index.html', { root: __dirname }); 
 })
 
@@ -49,12 +50,9 @@ app.get('/train/:id', async function(요청, 응답) {
 
 app.post('/train', async function(요청, 응답){
   
-  console.log(요청.body)
- 
   var my_date = new Date()
-  console.log(my_date)
+  
   date = JSON.stringify(my_date).split("T")[0]
- 
   console.log(date)
  
   var 저장할거 = {
@@ -67,10 +65,9 @@ app.post('/train', async function(요청, 응답){
     uplift: 요청.body.uplift,
     upheel: 요청.body.upheel,
     kick_on_chair: 요청.body.kick_on_chair,
-    spreading_thigh: 요청.body.spreading_thigh,
-    date: date
-   } 
-  console.log(저장할거)
+    spreading_thigh: 요청.body.spreading_thigh
+    } 
+  
   var train = await Train.create(저장할거)
   if(!train) {
     응답.status(500).json({message: "DB Error"})
@@ -94,13 +91,11 @@ app.get('/upload', function(요청, 응답) {
   });
 
 app.get('/login', function(요청,응답){
-  console.log("login requested")
   응답.render('login.ejs') }
 );
 
 app.post('/login', function(요청, 응답){ 
-    console.log(요청.body) 
-    응답.redirect('/train')
+  응답.redirect('/train')
   });
 
 app.post('/register', async function(요청, 응답) {
