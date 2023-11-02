@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path');
+const PORT = process.env.PORT || 5001
 const ejs = require("ejs");
 const bodyParser= require('body-parser')
 const methodOverride = require('method-override')
@@ -113,6 +114,6 @@ app.post('/register', async function(요청, 응답) {
   }
 })
 
-app.listen(5500, function() {
-  console.log('listening on 5500')
+app.listen(PORT, function() {
+  console.log('listening on ${PORT}')
 }) 
