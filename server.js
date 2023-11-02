@@ -27,7 +27,7 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static('public')) 
 
 
-app.get('/', function(요청, 응답) { 
+app.get('/home', function(요청, 응답) { 
   응답.render('index.ejs')
   //응답.sendFile('views/index.html', { root: __dirname }); 
 })
